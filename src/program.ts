@@ -3,7 +3,8 @@ export interface Database {
     getRoute: (from: string, to: string) => Route
     getPath: (seqeunce: string) => Route[]
     getSimplifiedPath: (routes: Route[]) => string
-    searchPaths: (from: string, to: string, maxStep?: number) => Route[][]
+    searchPaths: (from: string, to: string, maxStep?: number) => Route[][],
+    searchPathsByCost: (from: string, to:string, maxCost: number) => Route[][],
 }
 
 export interface Route {
@@ -36,6 +37,8 @@ export const createProgram = (deps: InputReaderDependencies) => {
         getPathCost: (input) => deps.routeManager.getPathCost(deps.database.getPath(input)),
 
         getPathCount: (from, to, maxStep = -1) => deps.database.searchPaths(from, to, maxStep).length,
+
+        getPathCountDupplicate: (from, to, maxCost) => deps.database.searchPathsByCost(from, to, maxCost).length,
 
         getMinCost: (from, to) => {
             return Math.min.apply(null, deps.database.searchPaths(from, to).map(path => deps.routeManager.getPathCost(path)))

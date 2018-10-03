@@ -40,6 +40,10 @@ describe("sample test case", () => {
         it("EE", () => {
             assert.equal(prog.getPathCount("E", "E"), 5)
         })
+
+        it("EE with max cost 20", () => {
+            assert.equal(prog.getPathCountDupplicate("E", "E", 20), 29)
+        })
     })
 
     describe("case3: minimum cost", () => {

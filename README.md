@@ -28,3 +28,6 @@ checklist
 
 - case 3:
   - enter start and end point in format `AB`
+
+- case 4 (case 2 bonus):
+  - enter start, end point and maximum cost allow in format `AB 4`

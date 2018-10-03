@@ -67,4 +67,9 @@ describe("database", () => {
             "EACFD",
         ])
     })
+
+    it("searchPathByCost()", () => {
+        const paths = database.searchPathsByCost("E", "E", 20)
+        assert.equal(paths.length, 29)
+    })
 })

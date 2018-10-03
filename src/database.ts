@@ -26,7 +26,7 @@ const isSameRoute = (a: Route, b: Route): boolean => a.from === b.from && a.to =
 
 const getRouteFrom = (from: string): Route[] => _routes.filter((r) => r.from == from)
 
-const _searchPaths = (from: string, to: string, routes: Route[], usedRoutes: Route[], pathSequenceList: string[], currentPath: string[], maxStep: number) => {
+const _searchPaths = (from: string, to: string, usedRoutes: Route[], pathSequenceList: string[], currentPath: string[], maxStep: number) => {
 
     currentPath.push(from)
 
@@ -37,13 +37,30 @@ const _searchPaths = (from: string, to: string, routes: Route[], usedRoutes: Rou
         const nextRoutes = getRouteFrom(from).filter(route => usedRoutes.find(r => isSameRoute(r, route)) == undefined)
         for(let route of nextRoutes) {
             usedRoutes.push(route)
-            _searchPaths(route.to, to, routes, usedRoutes, pathSequenceList, currentPath, maxStep)
+            _searchPaths(route.to, to, usedRoutes, pathSequenceList, currentPath, maxStep)
         }
 
     }
     
     currentPath.pop()
     usedRoutes.pop()
+}
+
+const _searchPathsByCost = (from: string, to: string, pathSequenceList: string[], currentPath: string[], currentCost: number, maxCost: number) => {
+
+    currentPath.push(from)
+
+    if(from === to && currentPath.length > 1) {
+        pathSequenceList.push(currentPath.join(""))
+    }
+
+    const nextRoutes = getRouteFrom(from)
+    for(let route of nextRoutes) {
+        if(currentCost + route.cost < maxCost)
+            _searchPathsByCost(route.to, to, pathSequenceList, currentPath, currentCost + route.cost, maxCost)
+    }
+    
+    currentPath.pop()
 }
 
 const db: Database = {
@@ -57,8 +74,15 @@ const db: Database = {
     getSimplifiedPath: (routes) => routes.reduce((sequence, route) => sequence + route.to, routes[0].from),
 
     searchPaths: (from, to, maxStep = -1) => {
-        let pathSequenceList = []
-        _searchPaths(from, to, _routes, [], pathSequenceList, [], maxStep)
+        const pathSequenceList = []
+        _searchPaths(from, to, [], pathSequenceList, [], maxStep)
+
+        return pathSequenceList.map(path => getPath(path))
+    },
+
+    searchPathsByCost: (from, to, maxCost) => {
+        const pathSequenceList = []
+        _searchPathsByCost(from, to, pathSequenceList, [], 0, maxCost)
 
         return pathSequenceList.map(path => getPath(path))
     }

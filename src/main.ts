@@ -46,6 +46,14 @@ const case3 = () => {
     })
 }
 
+const case4 = () => {
+    rl.question("enter start, end point and maximum cost allow in format 'AB 4' : ", (path) => {
+        console.log(prog.getPathCountDupplicate(path[0], path[1], parseInt(path.slice(3))))
+
+        process.exit()
+    })
+}
+
 rl.question("please enter routes data : ", (routeStr) => {
     prog.readRouteInput(routeStr.trim())
 
@@ -60,6 +68,10 @@ rl.question("please enter routes data : ", (routeStr) => {
 
         case "3":
             case3()
+            break
+
+        case "4":
+            case4()
             break
 
         default:
