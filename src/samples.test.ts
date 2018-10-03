@@ -31,4 +31,24 @@ describe("sample test case", () => {
             assert.equal(prog.getPathCost("ADF"), 0)
         })
     })
+
+    describe("case2: count possible path", () => {
+        it("ED with max 4", () => {
+            assert.equal(prog.getPathCount("E", "D", 4), 4)
+        })
+
+        it("EE", () => {
+            assert.equal(prog.getPathCount("E", "E"), 5)
+        })
+    })
+
+    describe("case3: minimum cost", () => {
+        it("ED", () => {
+            assert.equal(prog.getMinCost("E", "D"), 9)
+        })
+
+        it("EE", () => {
+            assert.equal(prog.getMinCost("E", "E"), 6)
+        })
+    })
 })
