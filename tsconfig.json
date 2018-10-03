@@ -1,0 +1,15 @@
+{
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules/",
+        "src/**/*.test.ts"
+    ],
+    "compilerOptions": {
+        "outDir": "dist/",
+        "lib": [
+            "es6"
+        ]
+    }
+}
